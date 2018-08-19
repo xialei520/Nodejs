@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        用户名：<input type="text" id="user"><br/>
+        密码: <input type="password" id="pass"><br/>
+        <button id="reg">注册</button>
+        <button id="login">登录</button>
+
+    </form>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script>
+        $('#reg').click(function(){
+            $.ajax({
+                url: '/user',
+                data: {
+                    act: 'reg',
+                    user: $('#user').val(),
+                    pass: $('#pass').val()
+                },
+                type: 'get',
+                success: function(res){
+                    var obj = JSON.parse(res);
+                    if(obj.ok){
+                        alert('注册成功')
+                    }else{
+                        alert("注册失败")
+                    }
+                },
+                error: function(){
+                    alert('通信失败')
+                }
+            })
+        })
+    </script>
+</body>
+</html>
