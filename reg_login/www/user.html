@@ -16,21 +16,49 @@
     </form>
     <script src="jquery-3.3.1.min.js"></script>
     <script>
+        var user = document.getElementById('user')
+        var pass = document.getElementById('pass')
+
         $('#reg').click(function(){
+            console.log('jjjj')
             $.ajax({
                 url: '/user',
                 data: {
                     act: 'reg',
-                    user: $('#user').val(),
-                    pass: $('#pass').val()
+                    user: user.value,
+                    pass: pass.value
                 },
                 type: 'get',
                 success: function(res){
+                    console.log('123')
                     var obj = JSON.parse(res);
                     if(obj.ok){
                         alert('注册成功')
                     }else{
-                        alert("注册失败")
+                        alert("注册失败"+obj.msg)
+                    }
+                },
+                error: function(){
+                    alert('通信失败')
+                }
+            })
+        })
+        $('#login').click(function(){
+            $.ajax({
+                url: '/user',
+                data: {
+                    act: "login",
+                    user: user.value,
+                    pass: pass.value
+                },
+                type: 'get',
+                success: function(res){
+                
+                    var obj = JSON.parse(res);
+                    if(obj.ok){
+                        alert('登录成功')
+                    }else{
+                        alert("登录失败"+obj.msg)
                     }
                 },
                 error: function(){

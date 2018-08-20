@@ -5,15 +5,20 @@ const urlLib = require('url');
 
 //用户名密码的存储
 var users = {}; 
+console.log(22333);
 var server = http.createServer(function(req, res){
     //解析数据
     var str = '';
-   
-    res.on('data', function(data){
+    console.log(req.url)
+    
+    req.on('data', function(data){
+        
         str += data;
     })
-    res.on('end', function(){
+    req.on('end', function(){
+        
         var obj = urlLib.parse(req.url, true);
+        console.log(obj)
         const url = obj.pathname;
         const GET = obj.query;
         const POST = querystring.parse(str);
@@ -22,30 +27,36 @@ var server = http.createServer(function(req, res){
         if(url == '/user'){//接口
             switch(GET.act){
                 case 'reg':
+                   
                     if(users[GET.user]){
-                        res.write('{"ok": false, msg: "此用户已存在"}')
+                        console.log('111111')
+                        res.write('{"ok": false, "msg": "此用户已存在"}')
                     }else{
+                        console.log('222222')
+
                         users[GET.user] = GET.pass;
-                        res.write('{"ok": true, msg: "注册成功"}')
+                        console.log(JSON.stringify(users))
+                        res.write('{"ok": true, "msg": "注册成功"}')
                     }
                 break;
                 case 'login':
                     if(users[GET.user] == null){
-                        res.write('{"ok": false, msg: "此用户不存在"}')
+                        res.write('{"ok": false, "msg": "此用户不存在"}')
 
-                    }else if(users[GET.user] != users[GET.pass]){
-                        res.write('{"ok": false, msg: "用户名或密码错误"}')
+                    }else if(users[GET.user] != GET.pass){
+                        res.write('{"ok": false, "msg": "用户名或密码错误"}')
 
                     }else{
-                        res.write('{"ok": true, msg: "登录成功"}')
+                        res.write('{"ok": true, "msg": "登录成功"}')
                     }
                 break;
                 default:
-                     res.write('{"ok": false, msg: "未知的act"}')
+                     res.write('{"ok": false, "msg": "未知的act"}')
                     
                 break;
-                res.end()
+                
             }
+            res.end()
         }else{//文件
             //读取文件
             var filename = './www' + url;
