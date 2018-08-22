@@ -1,0 +1,15 @@
+{
+  "name": "xialeitest",
+  "version": "1.0.0",
+  "description": "这是一个测试包，谁下谁怀孕！！",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "xielei",
+    "xialeitest"
+  ],
+  "author": "xialei",
+  "license": "ISC"
+}
