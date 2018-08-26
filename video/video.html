@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.7.3/video-js.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.7.3/video.js"></script>
+  <style media="screen">
+    .video {
+      display: block;
+
+      margin-top: 50px;
+    }
+
+    .container {
+      width: 100%;
+      /* height: 700px; */
+      display: flex;
+      flex-wrap: wrap;
+      /* justify-content: space-around;
+      align-items: center; */
+    }
+    iframe{
+      padding: 20px;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="container" class="container">
+    <!-- <video id="beautigirl" class="video" src=" " height="" width="80%" loop poster='美女.jpg' controls>
+    </video> -->
+
+
+      <!-- <iframe id="content"  width="100%" height="100%"  frameborder="0" scrolling="no" src="http://liveshare.huya.com/iframe/11342421"></iframe> -->
+    <iframe  name="content" v-for='item in list' width="40%" height="400"  frameborder="0" scrolling="no" :src=`http://liveshare.huya.com/iframe/${item.room_id}`></iframe>
+
+
+  </div>
+    <video src="blob:http://liveshare.huya.com/911241fd-b79f-467d-a98a-7ef827e493ee" autoplay="" id="hy-video"></video>
+
+  <script src="jquery-3.3.1.min.js" charset="utf-8"></script>
+  <script src="vue.js" charset="utf-8"></script>
+  <script type="text/javascript">
+
+
+    // $.ajax({
+    //   url: 'api.php',
+    //   type: 'get',
+    //   success: function(res) {
+    //     console.log(res)
+    //   }
+    // })
+    $.ajax({
+      url: "http://liveshare.huya.com/60539cfd-e7f7-4fb3-8097-745ec6039eaf",
+      type: "GET",
+      dataType: "jsonp", //指定服务器返回的数据类型
+      jsonpCallback: "showData",
+      success: function(data) {
+        var result = JSON.stringify(data); //json对象转成字符串
+        console.log(data.response)
+
+        console.log(data.response['1'])
+        console.log(data.response['3'])
+        console.log(data.response['122'])
+        console.log(data.response['1'].docs)
+        console.log(Vue)
+        Vue.list = data.response['1'].docs.concat(data.response['3'].docs);
+
+      }
+    });
+    $.ajax({
+      url: "https://search.cdn.huya.com/?callback=showData&m=Search&do=getSearchContent&q=%E4%B8%80%E8%B5%B7%E7%9C%8B&uid=0&v=4&typ=-5&livestate=0&rows=16&_=1535198331629",
+      type: "GET",
+      dataType: "jsonp", //指定服务器返回的数据类型
+      jsonpCallback: "showData",
+      success: function(data) {
+        var result = JSON.stringify(data); //json对象转成字符串
+        console.log(data.response)
+
+        console.log(data.response['1'])
+        console.log(data.response['3'])
+        console.log(data.response['122'])
+        console.log(data.response['1'].docs)
+        console.log(Vue)
+        Vue.list = data.response['1'].docs;
+
+      }
+    });
+    var Vue = new Vue({
+      el: '#container',
+      data: {
+        list: []
+      },
+      mounted: function() {
+        var obj=document.getElementById("content").contentWindow;
+        var ifmObj=obj.document.getElementById("hy-video");
+        console.log(ifmObj)
+      }
+    })
+    var beautigirl = document.getElementById('beautigirl');
+    var isPlay = false;
+    beautigirl.onclick = function() {
+      beautigirl.setAttribute('muted', false)
+      if (isPlay) {
+        this.pause();
+        isPlay = !isPlay;
+      } else {
+        this.play();
+        isPlay = !isPlay;
+      }
+
+      // console.log(this)
+      // this.pause();
+    }
+    var isFullscreen = false;
+    beautigirl.ondblclick = function() {
+      if (isFullscreen) {
+        exitFullscreen();
+        isFullscreen = !isFullscreen;
+      } else {
+        FullScreen()
+        isFullscreen = !isFullscreen;
+      }
+
+    }
+    //进入全屏
+    function FullScreen() {
+      var ele = document.documentElement;
+      if (ele.requestFullscreen) {
+        ele.requestFullscreen();
+      } else if (ele.mozRequestFullScreen) {
+        ele.mozRequestFullScreen();
+      } else if (ele.webkitRequestFullScreen) {
+        ele.webkitRequestFullScreen();
+      }
+    }
+    //退出全屏
+    function exitFullscreen() {
+      var de = document;
+      if (de.exitFullscreen) {
+        de.exitFullscreen();
+      } else if (de.mozCancelFullScreen) {
+        de.mozCancelFullScreen();
+      } else if (de.webkitCancelFullScreen) {
+        de.webkitCancelFullScreen();
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+html
+  head
+    title
+    link(href='aa.css', rel="stylesheet")
+    script alert('jjjj')
+    style
+  body
+    div(class="container")
+      ul(style= { width: '200px', height: '200px', background: 'red'})
+      ul(style="width:200px; height: 200px; background: red;")
+        li
+          input(type="button", id="btn", value="按钮")
+          a(href="http://www.xialei.store") 官网
+        li(class="red green orange")
+        li(class= ['red', 'green', 'oragne'])
+          div aaa
+            span nihao
+    div.container
+    div#container
+    div&attributes({title: "wz", id:"container"})
