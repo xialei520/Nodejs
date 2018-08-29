@@ -1,0 +1,59 @@
+html
+    head
+    body
+        div
+        script
+            |window.onload = function(){
+            |    alert('abc');
+            |   btn.onclick = function(){
+            |        console.log('123')
+            |   }
+            |}
+        script.
+            window.onload = function(){
+                alert('abc');
+               btn.onclick = function(){
+                    console.log('123')
+               }
+            }
+        script
+            include a.js
+
+            
+        div 我的名字叫：#{name}
+
+        div(class=arr, class='active')
+        div(style=json)
+        p(class=arr, style=json)
+
+        -var a = 4;
+        -var b = 5;
+        div 结果是： #{a + b}
+        div #{a}
+        div=a
+
+        -for(var i = 0; i < arr1.length; i++)
+            div=arr1[i]
+
+        div!=content
+
+
+        -var a = 8;
+        -if(a%2 == 0)
+            div(style={background: 'red'}) 奇数
+        -else
+            div(style={background: 'green'}) 偶数
+        
+
+        -var m = 8;
+        case a
+            when 0
+                div aaa
+            when 1
+                div bbb
+            when 3
+                div ccc
+            when 8
+                div ddd
+            default
+                |不靠谱
