@@ -40,13 +40,32 @@ server.get('/', function(req, res, next){
     
     db.query("SELECT * FROM `banner_table`", (err, data) =>{
         if(err){
-            console.log('err')
+            
             res.status(500).send('database err').end();
         }else{
-            console.log(data);
-            res.render('index.ejs', {banners: data})
-
+            res.banners = data;
+            next();
         }
     })
+   
 })
-// server.use(expressStatic('./www'))
+server.get('/', (req, res, next) => {
+    db.query("SELECT ID,title, summary FROM article_table", (err, data) => {
+        if(err){
+            res.status(500).send('database err').end();
+        }else{
+            res.articles = data;
+            next();
+        }
+    })
+    
+})
+server.get('/', (req, res, next) => {
+    // console.log(res.banners, res.articles)
+    res.render('index.ejs', {banners: res.banners, articles: res.articles})
+})
+
+server.get('/article', (req, res)=>{
+    res.render('conText.ejs', {})
+})
+server.use(expressStatic('./www'))
