@@ -34,10 +34,9 @@ server.set('view engine', 'html');
 server.set('views', './template');
 // 用哪种模板引擎
 server.engine('html', consolidate.ejs);
-
 //4.用户请求
 server.get('/', function(req, res, next){
-    
+    //查询banner数据
     db.query("SELECT * FROM `banner_table`", (err, data) =>{
         if(err){
             
@@ -47,9 +46,9 @@ server.get('/', function(req, res, next){
             next();
         }
     })
-   
 })
 server.get('/', (req, res, next) => {
+    // 查询article数据
     db.query("SELECT ID,title, summary FROM article_table", (err, data) => {
         if(err){
             res.status(500).send('database err').end();
@@ -58,13 +57,13 @@ server.get('/', (req, res, next) => {
             next();
         }
     })
-    
 })
 server.get('/', (req, res, next) => {
-    // console.log(res.banners, res.articles)
+    //获取数据并渲染到页面
     res.render('index.ejs', {banners: res.banners, articles: res.articles})
 })
 
+//跳转页面
 server.get('/article', (req, res)=>{
     res.render('conText.ejs', {})
 })
