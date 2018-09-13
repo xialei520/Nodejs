@@ -8,6 +8,7 @@ const multer = require('multer');
 // const ejs = require('ejs');
 const consolidate = require('consolidate');
 const mysql = require('mysql');
+const common = require('./libs/common')
 
 var server = express();
 server.listen(8080);
@@ -61,10 +62,30 @@ server.get('/', (req, res, next) => {
 server.get('/', (req, res, next) => {
     //获取数据并渲染到页面
     res.render('index.ejs', {banners: res.banners, articles: res.articles})
+    res.end();
 })
 
 //跳转页面
 server.get('/article', (req, res)=>{
-    res.render('conText.ejs', {})
+    console.log(req.query.id)
+    // res.render('conText.ejs', {})
+    db.query(`SELECT * FROM article_table WHERE ID=${req.query.id}`, function(err, data){
+        if(err){
+            res.status(500).send('数据有问题').end();
+        }else{
+            console.log(data)
+            if(data.length == 0){
+                res.status(404).send('数据没有找到').end();
+            }else{
+                var article_data = data[0];
+                article_data.sDate = common.timedata(article_data.post_time);
+                article_data.content = article_data.content.replace(/^/gm, '<p>').replace(/$/gm, '</p>');
+                // console.log(article_data.src)
+                res.render('conText.ejs', {
+                    article_data: article_data
+                })
+            }
+        }
+    });
 })
 server.use(expressStatic('./www'))
