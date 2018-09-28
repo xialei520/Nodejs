@@ -4,7 +4,12 @@ const fs = require('fs-extra');
 const path = require('path');
 const mysql = require('mysql');
 
-
+const db = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'blog'
+})
 const url = 'https://000av.org';
 
 async function group(url) {
@@ -52,11 +57,21 @@ async function Img(img, dir, imgTitle) {
 async function down(imgUrl, dir, imgTitle) {
     console.log(`正在下载${imgUrl}`)
     const filename = imgUrl.split('/').pop();
-    // var img_url = 'http:'+imgUrl;
-    const req = request.get('http:' + imgUrl)
-        .set({ 'Referer': 'https://000av.org/' })
-    req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, imgTitle, filename)));
-     
+    var img_url = 'http:' + imgUrl;
+    // const req = request.get('http:' + imgUrl)
+    //     .set({ 'Referer': 'https://000av.org/' })
+    // req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, imgTitle, filename)));
+   await insertDatabase(filename, img_url);
+}
+async function insertDatabase(filename, img_url){
+    console.log('jjjjjj')
+    db.query(`INSERT INTO mm (filename, imgUrl) VALUES (${filename}, ${img_url})`, function (err, data) {
+        if (err) {
+            console.error('err');
+        } else {
+             console.log('success')
+        }
+    })
 }
 
 function random(min, max) {
