@@ -8,7 +8,7 @@ const db = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: 'root',
-    database: 'blog'
+    database: 'meimei'
 })
 const url = 'https://000av.org';
 
@@ -18,11 +18,11 @@ async function group(url) {
 
     console.log($('.newnav .tp ul li').length);
     var html = $('.newnav .tp ul li');
-    for (let i = 7; i < html.length; i++) {
+    for (let i = 2; i < html.length; i++) {
         let pageUrl = html.eq(i).find('a').attr('href');
         let dir = html.eq(i).find('a').text();
         console.log(`创建${dir}文件夹`)
-        await fs.mkdir(path.join(__dirname, '/mm', dir));
+        // await fs.mkdir(path.join(__dirname, '/mm', dir));
         await getImgUrl(url + pageUrl, dir);
 
     }
@@ -39,7 +39,7 @@ async function getImgUrl(urlimg, dir) {
         const imgList = sum.eq(j).find('a').attr('href');
         const imgTitle = sum.eq(j).find('a').text();
         console.log(`创建${imgTitle}文件夹`)
-        await fs.mkdir(path.join(__dirname, '/mm', dir, imgTitle));
+        // await fs.mkdir(path.join(__dirname, '/mm', dir, imgTitle));
         await Img(url + imgList, dir, imgTitle)
     }
 }
@@ -51,7 +51,7 @@ async function Img(img, dir, imgTitle) {
     for (let k = 1; k < img_sum - 1; k++) {
         let imgUrl = $__('.imgbody p').eq(k).find('img').attr('src');
         await down(imgUrl, dir, imgTitle);
-        await sleep(random(5000, 10000))
+        await sleep(random(1000, 2000))
     }
 }
 async function down(imgUrl, dir, imgTitle) {
@@ -64,8 +64,8 @@ async function down(imgUrl, dir, imgTitle) {
    await insertDatabase(filename, img_url);
 }
 async function insertDatabase(filename, img_url){
-    console.log('jjjjjj')
-    db.query(`INSERT INTO mm (filename, imgUrl) VALUES (${filename}, ${img_url})`, function (err, data) {
+    
+    await db.query(`INSERT INTO meimei (file_name, imgUrl) VALUES ('${filename}', '${img_url}')`, function (err, data) {
         if (err) {
             console.error('err');
         } else {

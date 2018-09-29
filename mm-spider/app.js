@@ -5,6 +5,9 @@ const cheerio = require('cheerio')
 const fs = require('fs-extra')
 const path = require('path')
 const mysql = require('mysql');
+ 
+
+
 let url = 'http://www.mmjpg.com/tag/meitui/'
 const db = mysql.createPool({
   host: 'localhost',
@@ -51,7 +54,7 @@ async function getPic(url) {
   // 以图集名称来分目录  
   const dir = $('.article h2').text()
   console.log(`创建${dir}文件夹`)
-  await fs.mkdir(path.join(__dirname, '/mm', dir))
+  // await fs.mkdir(path.join(__dirname, '/mm', dir))
   const pageCount = parseInt($('#page .ch.all').prev().text())
   for (let i = 1; i <= pageCount; i++) {
     let pageUrl = url + '/' + i
@@ -60,28 +63,27 @@ async function getPic(url) {
     // 获取图片的真实地址
     const imgUrl = _$('#content img').attr('src')
     download(dir, imgUrl)
-    await sleep(random(1000, 5000))        
+    await sleep(random(1000, 2000))        
   }
 }
 
 // 下载图片
-function download(dir, imgUrl) {
+async function download(dir, imgUrl) {
   console.log(`正在下载${imgUrl}`)
   const filename = imgUrl.split('/').pop()  
   // const req = request.get(imgUrl)
   //   .set({ 'Referer': 'http://www.mmjpg.com' })
   // req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, filename)))
-  insertDatabase(filename, imgUrl)
+  await insertDatabase(filename, imgUrl)
 }
 
 async function insertDatabase(filename, imgUrl){
-  console.log('jjjjjj')
-  db.query(`INSERT INTO mm (file_name, imgUrl) VALUES (${filename}, ${imgUrl})`, function (err, data) {
+  let addSql = `INSERT INTO mm (file_name, imgUrl) VALUES ('${filename}', '${imgUrl}')`;
+  await db.query(addSql, function (err, data) {
       if (err) {
           console.error(err);
       } else {
            console.log('success')
-         
       }
   })
 }

@@ -4,9 +4,15 @@ const cheerio = require('cheerio');
 const fs = require('fs-extra');
 
 const path = require('path');
+const mysql = require('mysql');
 
 const url = 'http://www.meituba.com/';
-
+const db = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'mm'
+})
 // 获取图片分类
 async function classify() {
     console.log(url)
@@ -116,7 +122,7 @@ async function getSrc(dir1, src, dir) {
         const _$4 = cheerio.load(data4.text);
         let imgload = _$4('.photo img').attr('src');
         await down(dir1, imgload, dir);
-        await sleep(random(1000, 5000))
+        await sleep(random(1000, 2000))
     }
 }
 async function down(dir1, imgload, dir) {
@@ -124,10 +130,16 @@ async function down(dir1, imgload, dir) {
 
     console.log(`正在下载${imgload}`)
     const filename = imgload.split('/').pop();
-    const req = request.get(imgload)
-        .set({ 'Referer': 'http://www.meituba.com' })
-    req.pipe(fs.createWriteStream(path.join(__dirname, 'mm',dir1, dir, filename)))
-
+    // const req = request.get(imgload)
+    //     .set({ 'Referer': 'http://www.meituba.com' })
+    // req.pipe(fs.createWriteStream(path.join(__dirname, 'mm',dir1, dir, filename)))
+    await db.query(`INSERT INTO mm (file_name, imgUrl) VALUES ('${filename}', '${imgload}')`, function (err, data) {
+        if (err) {
+            console.error('err');
+        } else {
+             console.log('success')
+        }
+    })
 }
 
 
