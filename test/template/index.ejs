@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="referer" content="null">
+    <title>Document</title>
+    <style>
+        ul {
+            width: 100%;
+            height: auto;
+        }
+
+        li {
+            width: 200px;
+            height: 400px;
+            display: inline-block;
+        }
+
+        img {
+            width: 200px;
+            height: 400px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- "<img src="http://pic.meituba.com/uploads/allimg/2018/03/26/70_5247.jpg" referrerPolicy="no-referrer" alt=""> -->
+    <ul class="clearfix">
+        <% for(var i = 0; i < data.length; i++){%>
+
+            <li>
+                <img src="<%= data[i].imgUrl%>"  referrerPolicy="no-referrer" alt="" />
+            </li>
+            <% } %>
+    </ul>
+     
+    <script type="text/javascript">
+
+        // var oImg = document.getElementsByTagName('img');
+
+
+        // var seeHeight = document.documentElement.clientHeight;
+        // var Img = Array.from(oImg);
+        // Img.forEach(function (value, index) {
+        //     if (value.offsetTop < seeHeight) {
+        //         console.log(value.offsetTop, seeHeight);
+        //         value.src = value.dataset.src;
+
+        //     }
+        // })
+        // window.onscroll = function () {
+        //     var Img = Array.from(oImg);
+        //     console.log(Img.length);
+        //     var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+        //     Img.forEach(function (value, index, arr) {
+        //         console.log(value.offsetTop, seeHeight + scrollTop)
+        //         if (value.offsetTop < seeHeight + scrollTop - 100) {
+        //             value.src = value.dataset.src;
+        //         }
+        //     })
+             
+
+        // }
+       
+
+    </script>
+</body>
+
+</html>
