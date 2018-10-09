@@ -18,11 +18,11 @@ async function group(url) {
 
     console.log($('.newnav .tp ul li').length);
     var html = $('.newnav .tp ul li');
-    for (let i = 2; i < html.length; i++) {
+    for (let i = 6; i < html.length; i++) {
         let pageUrl = html.eq(i).find('a').attr('href');
         let dir = html.eq(i).find('a').text();
         console.log(`创建${dir}文件夹`)
-        // await fs.mkdir(path.join(__dirname, '/mm', dir));
+        await fs.mkdir(path.join(__dirname, '/mm', dir));
         await getImgUrl(url + pageUrl, dir);
 
     }
@@ -39,7 +39,7 @@ async function getImgUrl(urlimg, dir) {
         const imgList = sum.eq(j).find('a').attr('href');
         const imgTitle = sum.eq(j).find('a').text();
         console.log(`创建${imgTitle}文件夹`)
-        // await fs.mkdir(path.join(__dirname, '/mm', dir, imgTitle));
+        await fs.mkdir(path.join(__dirname, '/mm', dir, imgTitle));
         await Img(url + imgList, dir, imgTitle)
     }
 }
@@ -58,10 +58,10 @@ async function down(imgUrl, dir, imgTitle) {
     console.log(`正在下载${imgUrl}`)
     const filename = imgUrl.split('/').pop();
     var img_url = 'http:' + imgUrl;
-    // const req = request.get('http:' + imgUrl)
-    //     .set({ 'Referer': 'https://000av.org/' })
-    // req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, imgTitle, filename)));
-   await insertDatabase(filename, img_url);
+    const req = request.get('http:' + imgUrl)
+        .set({ 'Referer': 'https://000av.org/' })
+    req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, imgTitle, filename)));
+//    await insertDatabase(filename, img_url);
 }
 async function insertDatabase(filename, img_url){
     
