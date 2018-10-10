@@ -11,18 +11,10 @@ async function getId(url){
    
     const $ = cheerio.load(data.text);
     
-    // const $1 = cheerio.load(ss.html());
-    // console.log($1('tr').length)
+     
     
 }
 getId(url);
 
  
-// (async () => {
-//   const browser = await puppeteer.launch();
-//   const page = await browser.newPage();
-//   await page.goto( url, {waitUntil: 'networkidle2'});
-//   await page.pdf({path: 'hn.pdf', format: 'A4'});
-//   console.log(page)
-//   await browser.close();
-// })();
+ 
