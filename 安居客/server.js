@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const cheerio = require('cheerio');
 const request = require('superagent');
 const path = require('path');
-const xlsx = require('node-xlsx');
+const xlsx = require('xlsx');
 
 const url = 'https://qd.zu.anjuke.com/fangyuan/px3/';
 
@@ -18,39 +18,39 @@ async function getPage(url) {
         } else {
             var eachPage = 'https://qd.zu.anjuke.com/fangyuan/p' + i + '-px3/';
         }
-        await getUrl(eachPage);
+        await getUrl(eachPage, i);
         // console.log(eachPage)
     }
 }
-async function getUrl(eachPage) {
+async function getUrl(eachPage, i) {
     console.log(eachPage)
-    // const data = await request(eachPage);
-    // const $ = cheerio.load(data.text);
+    const Data = await request(eachPage);
+    const $ = cheerio.load(Data.text);
 
 
-    // console.log($('#list-content .zu-itemmod').length, 'sss')
-    // var obj = {
-    //     name: '第' + i + '页'
+    console.log($('#list-content .zu-itemmod').length, 'sss')
+    var obj = {
+        name: '第' + i + '页'
 
-    // };
-    // var data = [
-    //     [
-    //         '姓名', '价格', '户型', '面积', '朝向', '楼层', '装修', '类型', '小区'
-    //     ]
-    // ]
-    // for (var j = 0; j < $('#list-content .zu-itemmod').length; j++) {
+    };
+    var data = [
+        [
+            '姓名', '价格', '户型', '面积', '朝向', '楼层', '装修', '类型', '小区'
+        ]
+    ]
+    for (var j = 0; j < $('#list-content .zu-itemmod').length; j++) {
         
-    //     var href = $('#list-content .zu-itemmod').eq(j).attr('link');
-    //     // await load(href)
-    // }
+        var href = $('#list-content .zu-itemmod').eq(j).attr('link');
+        await load(href)
+    }
 }
-async function load(href, i) {
+async function load(href) {
    
     const message = await request(href);
     const $_ = cheerio.load(message.text);
 
     for (var k = 0; k < $_('#room_pic_wrap .img_wrap img').length; k++) {
-        imgArr.push($_('#room_pic_wrap .img_wrap img').eq(k).attr('src'))
+        // imgArr.push($_('#room_pic_wrap .img_wrap img').eq(k).attr('src'))
     }
     var each = [];
     console.log($_('.house-info-zufang li').length, "000");
@@ -72,7 +72,7 @@ async function load(href, i) {
     console.log(JSON.stringify(arrData))
 
 }
-var buffer = xlsx.build(arrData)
-fs.writeFile('租房信息.xlsx',  buffer, function (err) {
-    console.log(err)
-})
+// var buffer = xlsx.build(arrData)
+// fs.writeFile('租房信息.xlsx',  buffer, function (err) {
+//     console.log(err)
+// })
