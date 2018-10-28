@@ -3,5 +3,11 @@
     "cheerio": "^1.0.0-rc.2",
     "fs-extra": "^7.0.0",
     "superagent": "^4.0.0-beta.5"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "fs-extra": "^7.0.0",
+    "mysql": "^2.16.0",
+    "superagent": "^4.0.0-beta.5"
   }
 }

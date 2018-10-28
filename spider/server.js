@@ -8,10 +8,11 @@ const mysql = require('mysql');
 
 const url = 'http://www.meituba.com/';
 const db = mysql.createPool({
-    host: 'localhost',
+    host: 'cdb-ecuikhtu.bj.tencentcdb.com',
     user: 'root',
-    password: 'root',
-    database: 'mm'
+    password: 'xl371329',
+    database: 'mm',
+    port: 10028
 })
 // 获取图片分类
 async function classify() {
@@ -133,9 +134,9 @@ async function down(dir1, imgload, dir) {
     // const req = request.get(imgload)
     //     .set({ 'Referer': 'http://www.meituba.com' })
     // req.pipe(fs.createWriteStream(path.join(__dirname, 'mm',dir1, dir, filename)))
-    await db.query(`INSERT INTO mm (file_name, imgUrl) VALUES ('${filename}', '${imgload}')`, function (err, data) {
+    await db.query(`INSERT INTO mm (title, url) VALUES ('${filename}', '${imgload}')`, function (err, data) {
         if (err) {
-            console.error('err');
+            console.error(err);
         } else {
              console.log('success')
         }
