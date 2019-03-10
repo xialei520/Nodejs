@@ -4,17 +4,17 @@ const request = require('superagent')
 const cheerio = require('cheerio')
 const fs = require('fs-extra')
 const path = require('path')
-const mysql = require('mysql');
+// const mysql = require('mysql');
  
 
 
 let url = 'http://www.mmjpg.com/tag/meitui/'
-const db = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'mm'
-})
+// const db = mysql.createPool({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'root',
+//   database: 'mm'
+// })
 
 /**
  * 生成[n, m]随机数
@@ -71,10 +71,10 @@ async function getPic(url) {
 async function download(dir, imgUrl) {
   console.log(`正在下载${imgUrl}`)
   const filename = imgUrl.split('/').pop()  
-  // const req = request.get(imgUrl)
-  //   .set({ 'Referer': 'http://www.mmjpg.com' })
-  // req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, filename)))
-  await insertDatabase(filename, imgUrl)
+  const req = request.get(imgUrl)
+    .set({ 'Referer': 'http://www.mmjpg.com' })
+  req.pipe(fs.createWriteStream(path.join(__dirname, 'mm', dir, filename)))
+  // await insertDatabase(filename, imgUrl)
 }
 
 async function insertDatabase(filename, imgUrl){
