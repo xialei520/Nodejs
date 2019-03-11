@@ -60,11 +60,13 @@ const fs = require('fs-extra');
     console.log(`创建song文件夹`)
     for (let j = 0; j < selectedSongHref.length; j++) {
         const songUrl = 'http://music.163.com/song/media/outer/url?id=' + selectedSongHref[j].songId + '.mp3'
-        console.log(`正在下载第${j + 1}首歌曲《${selectedSongHref[j].title}》 ${songUrl}`)
+		// 去掉两边的空格符
+		var title = selectedSongHref[j].title.replace(/(^\s*)|(\s*$)/g, "")
+        console.log(`正在下载第${j + 1}首歌曲《${title}》${songUrl}`)
 
         //下载歌曲并保存在本地
         const req = request.get(songUrl).set({ 'Referer': 'http://music.163.com' })
-        req.pipe(fs.createWriteStream(path.join(__dirname, 'song', selectedSongHref[j].title + '.mp3')))
+        req.pipe(fs.createWriteStream(path.join(__dirname, 'song', title + '.mp3')))
         await sleep(random(2000, 3000))
     }
     browser.close();
